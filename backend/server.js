@@ -11,21 +11,8 @@ const io = new Server(server, {
   cors: { origin: "*" },
 });
 
-// let viewsMap = {};
 const postViews = {};
 
-// io.on("connection", (socket) => {
-//   console.log("User connected");
-
-//   socket.on("postViewed", (postId) => {
-//     viewsMap[postId] = (viewsMap[postId] || 0) + 1;
-//     io.emit("viewUpdated", { postId, views: viewsMap[postId] });
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected");
-//   });
-// });
 io.on("connection", (socket) => {
   console.log("Client connected");
 

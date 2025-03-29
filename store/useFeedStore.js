@@ -1,30 +1,3 @@
-// // import create from "zustand";
-
-// // export const useFeedStore = create((set) => ({
-// //   posts: [],
-// //   setPosts: (posts) => set({ posts }),
-// //   updatePostView: (postId) =>
-// //     set((state) => ({
-// //       posts: state.posts.map((post) =>
-// //         post.id === postId ? { ...post, views: post.views + 1 } : post
-// //       ),
-// //     })),
-// // }));
-// import { create } from "zustand";
-
-// const useFeedStore = create((set) => ({
-//   posts: [],
-//   setPosts: (posts) => set({ posts }),
-
-//   updatePostView: (postId) =>
-//     set((state) => ({
-//       posts: state.posts.map((post) =>
-//         post.id === postId ? { ...post, views: post.views + 1 } : post
-//       ),
-//     })),
-// }));
-
-// export default useFeedStore;
 import { create } from "zustand";
 
 const useFeedStore = create((set) => ({
