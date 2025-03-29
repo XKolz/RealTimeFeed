@@ -1,13 +1,16 @@
 import React from "react";
-import { SafeAreaView, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import Feed from "../../screens/FeedScreen";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const App = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" />
-      <Feed />
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }} edges={["top", "left", "right"]}>
+        <StatusBar barStyle="dark-content" />
+        <Feed />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
