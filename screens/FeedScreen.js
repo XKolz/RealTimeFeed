@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { FlatList, Text } from "react-native";
 import axios from "axios";
 import PostItem from "../components/PostItem";
@@ -8,6 +8,15 @@ const videoList = [
   "https://www.w3schools.com/html/movie.mp4",
   "https://www.w3schools.com/html/mov_bbb.mp4",
 ];
+
+const renderPostItem =
+  (viewableItemsRef) =>
+  ({ item }) => {
+    const isItemVisible = !!viewableItemsRef.current?.find(
+      (i) => i?.item?.id === item.id
+    );
+    return <PostItem post={item} isVisible={isItemVisible} />;
+  };
 
 const FeedScreen = () => {
   const { posts, setPosts } = useFeedStore();
@@ -51,39 +60,27 @@ const FeedScreen = () => {
     fetchData(true);
   };
 
-  const onViewableItemsChanged = ({ viewableItems: visibleItems }) => {
-    if (Array.isArray(visibleItems)) {
-      const cleanedItems = visibleItems.filter(
-        (i) => i && i.item && typeof i.item.id !== "undefined"
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems: visibleItems }) => {
+      viewableItems.current = visibleItems.filter(
+        (i) => i?.item?.id !== undefined
       );
-      viewableItems.current = cleanedItems;
-    } else {
-      viewableItems.current = [];
-    }
-  };
+    },
+    []
+  );
 
   return (
     <FlatList
       data={posts}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => {
-        const isItemVisible = !!viewableItems.current?.find(
-          (i) => i?.item?.id === item.id
-        );
-        return <PostItem post={item} isVisible={isItemVisible} />;
-      }}
-      // ListEmptyComponent={
-      //   <Text style={{ textAlign: "center", marginTop: 40 }}>
-      //     No posts found
-      //   </Text>
-      // }
+      renderItem={renderPostItem(viewableItems)}
       onViewableItemsChanged={onViewableItemsChanged}
       viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
-      decelerationRate="normal" // ✅ smoother, natural scroll
-      bounces={true} // ✅ default behavior like native feeds
+      decelerationRate="normal" // smoother, natural scroll
+      bounces={true}
     />
   );
 };
